@@ -151,3 +151,13 @@ const symbols = [
     {address: 0x001c5280, moduleName: 'ole32.dll', symbolName: 'CoInitialize'},
     {address: 0x001c5284, moduleName: 'combase.dll', symbolName: 'CoCreateInstance'}
 ]
+
+let noddy = Process.enumerateModules()[0];
+Memory.protect(noddy.base, noddy.size, "rwx");
+
+for (let symbol of symbols) {
+    let symbolFunctionPtrAddress = noddy.base.add(symbol.address);
+    let symbolFunctionCodeAddress = Module.findExportByName(symbol.moduleName, symbol.symbolName);
+
+    symbolFunctionPtrAddress.writePointer(symbolFunctionCodeAddress);
+}
