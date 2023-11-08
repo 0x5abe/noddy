@@ -1,0 +1,3 @@
+LIBRARY   PROTECT
+EXPORTS
+   DummyExport @1
